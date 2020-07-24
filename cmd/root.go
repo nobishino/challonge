@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/nobishino/challonge/lib/index"
 	"github.com/spf13/cobra"
 )
 
@@ -16,6 +17,9 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
 		fmt.Println("challonge")
+		s := index.NewService()
+		resp := s.Get()
+		fmt.Println(resp)
 	},
 }
 
