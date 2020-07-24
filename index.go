@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+var baseURL = "https://api.challonge.com/v1"
+
 // GetRequest represents GET for API
 type GetRequest struct {
 	apikey string
@@ -18,7 +20,7 @@ type GetRequest struct {
 func Get() GetRequest {
 	return GetRequest{
 		apikey: os.Getenv("CHALLONGE_APIKEY"),
-		url:    "",
+		url:    baseURL,
 	}
 }
 

@@ -9,6 +9,9 @@ import (
 	"github.com/nobishino/challonge"
 )
 
+func TestMain(m *testing.M) {
+}
+
 func TestIndex(t *testing.T) {
 	expect := "hello"
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -17,8 +20,9 @@ func TestIndex(t *testing.T) {
 	})
 	ts := httptest.NewServer(h)
 	defer ts.Close()
+	defer challonge.SetBaseURL(ts.URL)() // replace API Base URL with test server's base URL
 
-	resp, err := challonge.Get().WithURL(ts.URL).Index().Do()
+	resp, err := challonge.Get().Index().Do()
 	if err != nil {
 		t.Error(err)
 	}
