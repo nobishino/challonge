@@ -1,6 +1,9 @@
 # challonge
-Command line based challonge API Client, implemented by Golang
 
+[![CircleCI](https://circleci.com/gh/nobishino/challonge.svg?style=svg)](https://circleci.com/gh/nobishino/challonge)
+
+- Challonge API Library for Golang
+- Command line based challonge API Client
 
 ## Development todos
 
