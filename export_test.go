@@ -1,9 +1,9 @@
 package challonge
 
-func SetBaseURL(url string) func() {
-	original := baseURL
-	baseURL = url
+func SetBaseUrl(url string) func() {
+	original := baseUrl
+	baseUrl = url
 	return func() {
-		baseURL = original
+		baseUrl = original
 	}
 }

@@ -20,7 +20,7 @@ func TestIndex(t *testing.T) {
 	})
 	ts := httptest.NewServer(h)
 	defer ts.Close()
-	defer challonge.SetBaseURL(ts.URL)() // replace API Base URL with test server's base URL
+	defer challonge.SetBaseUrl(ts.URL)() // replace API Base URL with test server's base URL
 
 	resp, err := challonge.Get().Index().Do()
 	if err != nil {
