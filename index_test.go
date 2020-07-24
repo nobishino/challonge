@@ -1,4 +1,4 @@
-package lib_test
+package challonge_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/nobishino/challonge/lib"
+	"github.com/nobishino/challonge"
 )
 
 func TestIndex(t *testing.T) {
@@ -18,7 +18,7 @@ func TestIndex(t *testing.T) {
 	ts := httptest.NewServer(h)
 	defer ts.Close()
 
-	resp, err := lib.Get().WithURL(ts.URL).Index().Do()
+	resp, err := challonge.Get().WithURL(ts.URL).Index().Do()
 	if err != nil {
 		t.Error(err)
 	}

@@ -6,12 +6,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/nobishino/challonge/cmd"
 )
 
 func main() {
-	cmd.Execute()
+	playground()
 }
 
 func playground() {
