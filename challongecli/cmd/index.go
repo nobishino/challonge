@@ -5,9 +5,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 func init() {
@@ -21,7 +21,8 @@ var indexCmd = &cobra.Command{
 }
 
 func index(c *cobra.Command, args []string) {
-	apikey := os.Getenv("CHALLONGE_APIKEY")
+	apikey := viper.GetString("apikey")
+	log.Println(apikey)
 	baseurl := "https://api.challonge.com/v1/tournaments.json"
 	url := fmt.Sprintf("%s?api_key=%s", baseurl, apikey)
 	resp, err := http.Get(url)

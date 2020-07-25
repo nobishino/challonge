@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"log"
-	"os"
 
 	"github.com/nobishino/challonge"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var createCmd = &cobra.Command{
@@ -27,7 +27,8 @@ func init() {
 }
 
 func create(cmd *cobra.Command, args []string) {
-	apikey := os.Getenv(challongeApikeyEnv)
+	// apikey := os.Getenv(challongeApikeyEnv)
+	apikey := viper.GetString("apikey")
 	if apikey == "" {
 		log.Fatalf("Environment variable %s not set", challongeApikeyEnv)
 	}

@@ -49,7 +49,7 @@ func (s Service) Create(name, subdomain, tournamentPath string) (string, error) 
 		},
 	}
 	b, err := json.MarshalIndent(p, "", "  ")
-	log.Println("POSTING:")
+	log.Println("POSTING:", url)
 	log.Println(string(b))
 	if err != nil {
 		return "", err
@@ -67,9 +67,52 @@ func (s Service) Create(name, subdomain, tournamentPath string) (string, error) 
 	return string(respBytes), nil
 }
 
+func (s Service) postJson(b []byte, url string) ([]byte, error) {
+	body, err := json.Marshal(b)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := http.Post(url, "application/json", bytes.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return respBytes, nil
+}
+
 func NewService(apikey string) Service {
 	return Service{
 		apikey:  apikey,
 		baseUrl: baseUrl,
 	}
+}
+
+func (s Service) Destroy(subdomain, urlSuffix string) {
+	var tournament string
+	if subdomain == "" {
+		tournament = urlSuffix
+	} else {
+		tournament = fmt.Sprintf("%s-%s", subdomain, urlSuffix)
+	}
+	urlString := fmt.Sprintf("%s/tournaments/%s.json?api_key=%s", s.baseUrl, tournament, s.apikey)
+	req, err := http.NewRequest(http.MethodDelete, urlString, nil)
+	log.Println("Access to", urlString)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	cli := &http.Client{}
+	resp, err := cli.Do(req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer resp.Body.Close()
+	r, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.Println(string(r))
 }
