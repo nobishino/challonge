@@ -33,7 +33,9 @@ func TestCreate(t *testing.T) {
 
 	s := challonge.NewService(apikey)
 	name := "Test Tournament"
-	resp, err := s.Create(name)
+	subdomain := "subdomain"
+	url := ""
+	resp, err := s.Create(name, subdomain, url)
 	if err != nil {
 		t.Error(err)
 	}

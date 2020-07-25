@@ -2,11 +2,13 @@ package challonge
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 var baseUrl = "https://api.challonge.com/v1"
@@ -25,18 +27,25 @@ type CreateParam struct {
 }
 
 type Tournament struct {
-	Name string `json:"name"`
-	Url  string `json:"url"`
+	Name      string `json:"name"`
+	Url       string `json:"url"`
+	Subdomain string `json:"subdomain"`
 }
 
-func (s Service) Create(name string) (string, error) {
+func (s Service) Create(name, subdomain, tournamentPath string) (string, error) {
 	path := "tournaments.json"
 	url := fmt.Sprintf("%s/%s", s.baseUrl, path)
+	if tournamentPath == "" {
+		now := time.Now().Format(time.RFC3339)
+		hash := sha256.Sum256([]byte(subdomain + now))
+		tournamentPath = string(hash[:])
+	}
 	p := CreateParam{
 		ApiKey: s.apikey,
 		Tournament: Tournament{
-			Name: name,
-			Url:  "asodfjoasodf",
+			Name:      name,
+			Url:       tournamentPath,
+			Subdomain: subdomain,
 		},
 	}
 	b, err := json.MarshalIndent(p, "", "  ")
