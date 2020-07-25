@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -7,14 +7,20 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/nobishino/challonge/challongecli/cmd"
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	cmd.Execute()
+func init() {
+	rootCmd.AddCommand(indexCmd)
 }
 
-func playground() {
+var indexCmd = &cobra.Command{
+	Use:   "index",
+	Short: "retrieve all tournaments",
+	Run:   index,
+}
+
+func index(c *cobra.Command, args []string) {
 	apikey := os.Getenv("CHALLONGE_APIKEY")
 	baseurl := "https://api.challonge.com/v1/tournaments.json"
 	url := fmt.Sprintf("%s?api_key=%s", baseurl, apikey)
@@ -24,5 +30,6 @@ func playground() {
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
-	log.Println(string(body))
+	log.Println("Got response:")
+	fmt.Println(string(body))
 }
